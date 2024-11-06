@@ -71,7 +71,11 @@ class AkipController extends Controller
         );
 
         $file = Akip::where('uuid', $id)->firstOrFail();
-        $file->update($validData);
+        $file->update([
+            'title' => $validData['title'],
+            'document_year' => $validData['doc_year'],
+            'pic' => $validData['pic']
+        ]);
 
         return back()->with('success', 'Berkas berhasil diubah.')->withInput();
     }

@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Console\UserDetail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,5 +48,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected $with = ['user_detail'];
+
+    public function scopeNotSuperAdmin(Builder $query): void
+    {
+        $query->whereNot('id', env('SUPER_ADMIN_ID'));
+    }
+
+    public function user_detail()
+    {
+        return $this->hasOne(UserDetail::class);
     }
 }
