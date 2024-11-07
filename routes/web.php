@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\{Controllers, Controllers\Console, Controllers\Auth};
 
 Route::get('/', Controllers\WelcomeController::class)->name('welcome');
+Route::prefix('docs')->group(function () {
+    Route::get('/iki', Controllers\IkiController::class)->name('docs.iki');
+});
 
 Route::controller(Auth\LoginController::class)->prefix('login')->group(function () {
     Route::get('/', 'index')->name('login');

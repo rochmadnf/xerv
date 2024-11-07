@@ -33,9 +33,9 @@
         <div class="space-y-1.5">
             <label class="uk-form-label">Aparatur Sipil Negara</label>
             <div class="uk-form-controls">
-                <uk-select name="asn" id="asn" placeholder="--Pilih ASN--" searchable uk-cloak>
+                <uk-select name="asn" id="asn" placeholder="--Pilih ASN--" searchable uk-cloak disabled>
                     @foreach ($employees as $employee)
-                        <option selected="{{ $employee->id === $file->user_id ? 'selected' : false }}"
+                        <option {{ (int) $employee->id === (int) $file->user_id ? 'selected' : '' }}
                             value="{{ $employee->id . '--' . trim("{$employee?->user_detail?->front_title} {$employee?->name} {$employee?->user_detail?->back_title}") }} ">
                             {{ trim("{$employee?->user_detail?->front_title} {$employee?->name} {$employee?->user_detail?->back_title}") }}
                         </option>

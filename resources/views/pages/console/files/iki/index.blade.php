@@ -138,7 +138,7 @@
                 </svg>
                 <div class="uk-alert-title">Informasi</div>
                 <div class="uk-alert-description">
-                    Dokumen belum tersedia. Silakan <a href="{{ route('files.create', ['file_type' => 'akip']) }}"
+                    Dokumen belum tersedia. Silakan <a href="{{ route('files.create', ['file_type' => 'iki']) }}"
                         class="text-blue-500">Tambah</a> data terlebih dahulu.
                 </div>
             </div>

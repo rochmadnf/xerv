@@ -17,12 +17,15 @@
 </head>
 
 <body class="bg-slate-50 text-gray-900 antialiased">
+    <x-preview-card />
     <main class="flex min-h-screen w-full flex-col items-center justify-center gap-y-6 bg-bi-slate-300/40">
         @yield('content')
         <footer class="w-full text-center text-sm font-medium text-gray-500">
             &copy; 2024 SI-AKIP BRIDA
         </footer>
     </main>
+
+    @yield('script_page')
 </body>
 
 </html>

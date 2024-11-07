@@ -8,6 +8,7 @@ export default defineConfig({
                 "resources/css/app.css",
                 "resources/js/app.js",
                 "resources/js/vendor/simple-notify.js",
+                "resources/js/preview-card.js",
             ],
             refresh: true,
         }),

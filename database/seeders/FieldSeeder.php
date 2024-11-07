@@ -24,7 +24,7 @@ class FieldSeeder extends Seeder
                 'name' => 'Bidang Riset dan Teknologi Daerah',
             ],
             [
-                'name' => 'Bidan SDM dan Infrastruktur Riset Daerah',
+                'name' => 'Bidang SDM dan Infrastruktur Riset Daerah',
             ],
             [
                 'name' => 'Bidang Kebijakan Pembangunan Riset Daerah',

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Console\File\Iki;
 use App\Models\Console\UserDetail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,5 +61,10 @@ class User extends Authenticatable
     public function user_detail()
     {
         return $this->hasOne(UserDetail::class);
+    }
+
+    public function iki_files()
+    {
+        return $this->hasMany(Iki::class, 'user_id', 'id');
     }
 }
