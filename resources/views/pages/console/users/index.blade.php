@@ -20,7 +20,7 @@
             <thead>
                 <tr>
                     <th class="w-fit">NIP</th>
-                    <th>Nama</th>
+                    <th class="w-2/5">Nama</th>
                     <th>Jabatan &mdash; Bidang</th>
                     <th>Aksi</th>
                 </tr>
@@ -31,7 +31,7 @@
                         <td class="w-fit font-bold tracking-wide">{{ $user?->username }}</td>
                         <td>{{ trim("{$user?->user_detail?->front_title} {$user?->name} {$user?->user_detail?->back_title}") }}
                         </td>
-                        <td>{{ $user?->user_detail?->position }} &mdash; {{ $user?->user_detail?->field }}</td>
+                        <td>{{ $user?->user_detail?->position }} &mdash; {{ $user?->user_detail?->field?->name }}</td>
                         <td>#</td>
                     </tr>
                 @endforeach

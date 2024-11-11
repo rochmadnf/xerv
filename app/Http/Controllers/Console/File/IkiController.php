@@ -13,13 +13,13 @@ class IkiController extends Controller
 {
     protected function getLastYear(): int
     {
-        return (int) Iki::latest()->first()?->document_year;
+        return intval(((int) auth()?->user()->id === (int) env('SUPER_ADMIN_ID')) ? Iki::latest()->first()?->document_year : Iki::where('user_id')->latest()->first()?->document_year);
     }
 
     public function index()
     {
         $initYear = request()->has('year') ? request()->year : (($this->getLastYear() !== 0) ? $this->getLastYear() : now()->format('Y'));
-        $files =  Iki::with('user')->where('document_year', $initYear)->get();
+        $files = ((int) auth()?->user()->id === (int) env('SUPER_ADMIN_ID')) ? Iki::with('user')->where('document_year', $initYear)->get() : Iki::with('user')->where('user_id', auth()->user()?->id)->where('document_year', $initYear)->get();
         return view('pages.console.files.iki.index', compact('initYear', 'files'));
     }
 
@@ -31,14 +31,20 @@ class IkiController extends Controller
 
     public function store(Request $request)
     {
-        $request->request->set('asn', intval(explode('--', $request->asn)[0]));
+        $rules = [
+            'doc' => ['required', 'file', 'mimetypes:application/pdf', 'max:76800'],
+            'doc_year' => ['required', 'date_format:Y'],
+            'asn' => ['required', Rule::exists('users', 'id')],
+        ];
+
+        if ((int) env('SUPER_ADMIN_ID') === (int) auth()->user()->id) {
+            $request->request->set('asn', intval(explode('--', $request->asn)[0]));
+        } else {
+            $rules['asn'][0] = 'nullable';
+        }
 
         $validData = $request->validate(
-            [
-                'doc' => ['required', 'file', 'mimetypes:application/pdf', 'max:76800'],
-                'doc_year' => ['required', 'date_format:Y'],
-                'asn' => ['required', Rule::exists('users', 'id')],
-            ],
+            $rules,
             [
                 'doc.max' => 'File maksimal 75MB',
             ],
@@ -55,7 +61,7 @@ class IkiController extends Controller
         Iki::create([
             'document_path' => $docPath,
             'document_year' => $validData['doc_year'],
-            'user_id' => $validData['asn'],
+            'user_id' => ((int) env('SUPER_ADMIN_ID') === (int) auth()->user()->id) ? $validData['asn'] : auth()?->user()?->id,
         ]);
 
         return back()->with('success', 'Berkas berhasil ditambahkan.');

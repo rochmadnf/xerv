@@ -3,10 +3,9 @@ const previewBtns = document.querySelectorAll(`[data-fn="preview"]`);
 previewBtns.forEach((btn) => {
     btn.addEventListener("click", async () => {
         const res = await fetch(
-            `${location.protocol}//${location.host}/api/iki/${btn.dataset.id}`
+            `${location.protocol}//${location.host}/api/files/${btn.dataset.fileType}/${btn.dataset.id}/preview`
         ).then((res) => res.json());
 
-        console.log(res);
         if (res.status === "success") {
             openPreviewWindow(res);
         }

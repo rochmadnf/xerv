@@ -71,6 +71,12 @@ class AkipController extends Controller
         );
 
         $file = Akip::where('uuid', $id)->firstOrFail();
+
+        if ((int) $file->document_year !== (int) $validData['doc_year']) {
+            $movePath = str()->of($file->document_path)->replace($file->document_year, $validData['doc_year']);
+            Storage::disk('asset_public')->move($file->document_path, $movePath);
+        }
+
         $file->update([
             'title' => $validData['title'],
             'document_year' => $validData['doc_year'],
@@ -96,9 +102,11 @@ class AkipController extends Controller
 
 
         $file = Akip::where('uuid', $id)->firstOrFail();
-        $this->deleteFile($file->document_path);
 
-        $docPath = $request->file('doc')->store("docs/akip/{$file->document_year}", ['disk' => 'asset_public']);
+        if ($request->hasFile('doc')) {
+            $docPath = $request->file('doc')->store("docs/akip/{$file->document_year}", ['disk' => 'asset_public']);
+            $this->deleteFile($file->document_path);
+        }
 
         $file->update([
             'document_path' => $docPath,
@@ -118,6 +126,10 @@ class AkipController extends Controller
 
     protected function deleteFile($path): void
     {
-        Storage::disk('asset_public')->delete($path);
+        $file = Storage::disk('asset_public');
+
+        if (str()->of($file->path($path))->contains('sample.pdf') === false) {
+            $file->delete($path);
+        }
     }
 }

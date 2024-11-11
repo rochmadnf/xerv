@@ -6,6 +6,7 @@ use App\Http\{Controllers, Controllers\Console, Controllers\Auth};
 Route::get('/', Controllers\WelcomeController::class)->name('welcome');
 Route::prefix('docs')->group(function () {
     Route::get('/iki', Controllers\IkiController::class)->name('docs.iki');
+    Route::get('/akip', Controllers\AkipController::class)->name('docs.akip');
 });
 
 Route::controller(Auth\LoginController::class)->prefix('login')->group(function () {

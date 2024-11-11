@@ -9,6 +9,7 @@ export default defineConfig({
                 "resources/js/app.js",
                 "resources/js/vendor/simple-notify.js",
                 "resources/js/preview-card.js",
+                "resources/js/download-doc.js",
             ],
             refresh: true,
         }),

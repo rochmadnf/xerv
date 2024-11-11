@@ -23,9 +23,9 @@
                     alt="Welcome Character">
             </div>
             <div class="grid h-full w-full flex-1 grid-cols-2 gap-4">
-                <x-card-link route="#" label="AKIP" subLabel="Akuntabilitas Kinerja Instansi Pemerintah"
+                <x-card-link :route="route('docs.akip')" label="AKIP" subLabel="Akuntabilitas Kinerja Instansi Pemerintah"
                     classes="bg-slate-600 hover:bg-slate-700 duration-300 transition" :illustration="asset('assets/illustration/asset-2.png')" />
-                <x-card-link :route="route('docs.iki')" label="IKI" subLabel="Indeks Kinerja Individu"
+                <x-card-link :route="route('docs.iki')" label="IKI" subLabel="Indikator Kinerja Individu"
                     classes="bg-blue-500 hover:bg-blue-600 duration-300 transition" :illustration="asset('assets/illustration/asset-1.png')" />
             </div>
         </div>

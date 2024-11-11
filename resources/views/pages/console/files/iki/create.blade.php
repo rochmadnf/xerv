@@ -21,22 +21,24 @@
         <x-forms.input name="doc_year" pattern="\d*" minlength="4" maxlength="4" label="Tahun" type="text"
             :value="old('doc_year') ?? ''" step="1" placeholder="2023" />
 
-        <div class="space-y-1.5">
-            <label class="uk-form-label">Aparatur Sipil Negara</label>
-            <div class="uk-form-controls">
-                <uk-select name="asn" id="asn" placeholder="--Pilih ASN--" searchable uk-cloak>
-                    @foreach ($employees as $employee)
-                        <option
-                            value="{{ $employee->id . '--' . trim("{$employee?->user_detail?->front_title} {$employee?->name} {$employee?->user_detail?->back_title}") }} ">
-                            {{ trim("{$employee?->user_detail?->front_title} {$employee?->name} {$employee?->user_detail?->back_title}") }}
-                        </option>
-                    @endforeach
-                </uk-select>
+        @if ((int) env('SUPER_ADMIN_ID') === auth()->user()?->id)
+            <div class="space-y-1.5">
+                <label class="uk-form-label">Aparatur Sipil Negara</label>
+                <div class="uk-form-controls">
+                    <uk-select name="asn" id="asn" placeholder="--Pilih ASN--" searchable uk-cloak>
+                        @foreach ($employees as $employee)
+                            <option
+                                value="{{ $employee->id . '--' . trim("{$employee?->user_detail?->front_title} {$employee?->name} {$employee?->user_detail?->back_title}") }} ">
+                                {{ trim("{$employee?->user_detail?->front_title} {$employee?->name} {$employee?->user_detail?->back_title}") }}
+                            </option>
+                        @endforeach
+                    </uk-select>
+                </div>
+                @error('asn')
+                    <p class="uk-form-help uk-text-danger">{{ $message }}</p>
+                @enderror
             </div>
-            @error('asn')
-                <p class="uk-form-help uk-text-danger">{{ $message }}</p>
-            @enderror
-        </div>
+        @endif
 
 
         <div class="flex items-center gap-x-4">
