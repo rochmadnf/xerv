@@ -18,7 +18,8 @@ const attachmentObject = document.getElementById("objectPreviewAttachment");
 function openPreviewWindow(file) {
     previewAttachment.classList.remove("hidden", "-z-[9999]");
     previewAttachment.classList.add("flex", "z-[9999]");
-    attachmentObject.setAttribute("data", file.url_path);
+    PDFObject.embed(file.url_path, "#objectAttachment");
+    // attachmentObject.setAttribute("data", file.url_path);
     document.getElementById("objectName").innerText = file.filename;
 }
 

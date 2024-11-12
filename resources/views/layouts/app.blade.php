@@ -25,6 +25,7 @@
         </footer>
     </main>
 
+    <script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.js"></script>
     @yield('script_page')
 </body>
 
