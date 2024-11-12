@@ -12,9 +12,10 @@
         <div class="h-full w-full px-8" id="objectAttachment"></div>
         <object id="objectPreviewAttachment" class="px-8" data="#" type="application/pdf" frameborder="0"
             width="100%" height="100%">
-            <a id="gdViewer" target="_blank" class="inline-flex rounded-md bg-emerald-500 px-4 py-2"
-                href="#">Lihat</a>
-            <a id="btnDownloadUnSupportView" class="inline-flex rounded-md bg-blue-500 px-4 py-2" href="#"><i
+            <a id="gdViewer" target="_blank"
+                class="inline-flex items-center rounded-md bg-emerald-500 px-4 py-2 text-white" href="#">Lihat</a>
+            <a id="btnDownloadUnSupportView"
+                class="inline-flex items-center rounded-md bg-blue-500 px-4 py-2 text-white" href="#"><i
                     class="icon-download"></i>
                 <span class="text-sm font-medium">Download File</span>
             </a>
