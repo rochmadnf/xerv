@@ -3,23 +3,38 @@
 @section('title', 'Daftar Dokumen AKIP')
 
 @section('content')
-    <div class="relative h-full rounded-2xl bg-white px-10 pb-10 shadow-md shadow-slate-300 lg:max-h-[665px] lg:w-[1000px]">
+    <div
+        class="relative h-full w-full bg-white px-4 pb-4 shadow-md shadow-slate-300 lg:max-h-[665px] lg:w-[1000px] lg:rounded-2xl lg:px-10 lg:pb-10">
         <x-menu-back />
         <div class="flex h-full w-full flex-col space-y-8">
-            <div class="flex h-60 w-full justify-between gap-24 rounded-lg bg-slate-600 p-6">
-                <div class="flex flex-col gap-y-2 text-white">
+            <div
+                class="flex w-full flex-col items-center justify-center gap-10 rounded-lg bg-slate-600 p-6 lg:h-60 lg:flex-row lg:items-start lg:justify-between lg:gap-24">
+                <div class="flex w-fit flex-col rounded-2xl bg-white px-4 py-3 lg:hidden">
+                    <img src="{{ asset('assets/logo.png') }}" alt="Logo SIAKIP BRIDA" class="w-32">
+                </div>
+                <div class="hidden flex-col gap-y-2 text-white lg:flex">
                     <h3 class="text-4xl font-bold">AKIP</h3>
-                    <h6 class="text-lg font-medium">Akuntabilitas Kinerja Instansi Pemerintah</h6>
-                    <p class="text-justify tracking-wide">&mdash; Hai AKIPers, Sebagai bentuk komitmen untuk memberikan
+                    <h6 class="text-lg font-medium">Akuntabilitas Kinerja Instansi
+                        Pemerintah</h6>
+                    <p class="text-justify text-xs tracking-wide lg:text-base">&mdash; Hai AKIPers, Sebagai
+                        bentuk komitmen
+                        untuk memberikan
                         informasi yang jelas dan dapat dipertanggungjawabkan mengenai kinerja kami. Kamu dapat mengakses
                         dokumen yang mencerminkan upaya kami dalam mencapai transparansi, efisiensi, dan efektivitas dalam
                         pelayanan publik.</p>
                 </div>
-                <img src="{{ asset('assets/illustration/asset-2.png') }}" alt="IKI Character">
+                <img class="w-44" src="{{ asset('assets/illustration/asset-2.png') }}" alt="IKI Character">
+
+                {{-- @:mobile-view --}}
+                <div class="block space-y-1 text-center text-white lg:hidden">
+                    <h3 class="text-3xl font-bold leading-tight tracking-wide">AKIP</h3>
+                    <h5 class="text-base font-medium tracking-wide">Akuntabilitas Kinerja Instansi
+                        Pemerintah</h5>
+                </div>
             </div>
 
             <div
-                class="flex h-auto w-full flex-1 flex-col gap-y-4 overflow-y-auto rounded-lg border border-slate-400 p-4 lg:max-h-[285px] lg:min-h-[285px]">
+                class="flex h-full w-full flex-1 flex-col gap-y-4 rounded-lg border border-slate-400 p-4 lg:max-h-[285px] lg:min-h-[285px] lg:overflow-y-auto">
 
                 {{-- Year Selection --}}
                 <form id="formYear" method="GET" class="flex flex-row items-center gap-x-4">
@@ -62,18 +77,22 @@
                     @endphp
                     @forelse ($files as $file)
                         <div
-                            class="flex flex-row items-center gap-x-2 divide-x divide-slate-700/70 rounded-lg border border-slate-700/70 px-4 py-4">
+                            class="relative flex flex-col items-start gap-x-0 gap-y-2 rounded-lg border border-slate-700/70 px-4 py-4 lg:flex-row lg:items-center lg:gap-x-2 lg:gap-y-0 lg:divide-x lg:divide-slate-700/70">
 
-                            <div class="size-6 rounded-full bg-blue-500 text-center font-medium text-white">
+                            <div class="size-6 hidden rounded-full bg-blue-500 text-center font-medium text-white lg:block">
+                                {{ $sortNumber }}</div>
+                            <div
+                                class="size-6 absolute -left-2.5 -top-2.5 block rounded-full bg-blue-500 text-center font-medium text-white lg:hidden">
                                 {{ $sortNumber++ }}</div>
 
-                            <div class="flex flex-1 flex-col gap-y-1 px-4">
-                                <h4 class="text-lg/5 font-semibold">
+                            <div
+                                class="flex w-full flex-1 flex-col border-b border-b-slate-700/70 pb-2 lg:border-b-0 lg:px-4 lg:pb-0">
+                                <h4 class="text-sm/5 font-semibold lg:text-lg/5">
                                     {{ trim("{$file->title}") }}
                                 </h4>
                             </div>
 
-                            <div class="flex flex-row gap-x-2 pl-2">
+                            <div class="flex flex-row gap-x-2 pl-0 lg:pl-2">
                                 <button data-id="{{ $file->uuid }}" data-fn="preview" data-file-type="akip"
                                     class="inline-flex items-center rounded-full bg-teal-500 p-2 text-white transition duration-300 hover:bg-teal-600">
                                     <svg viewBox="0 0 24 24" class="size-5 pointer-events-none" fill="none"
@@ -119,6 +138,9 @@
                 </div>
             </div>
         </div>
+        <footer class="mt-8 block w-full text-center text-sm font-medium text-gray-500 sm:hidden">
+            &copy; 2024 SI-AKIP BRIDA
+        </footer>
     </div>
 @endsection
 

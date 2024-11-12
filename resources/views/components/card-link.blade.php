@@ -10,6 +10,5 @@
             <span class="font-medium">Lihat Dokumen</span>
         </a>
     </div>
-    <img class="w-32" src="{{ $illustration }}" alt="Character Card">
-
+    <img class="hidden w-32 sm:inline-block" src="{{ $illustration }}" alt="Character Card">
 </div>

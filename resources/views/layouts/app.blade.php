@@ -20,7 +20,7 @@
     <x-preview-card />
     <main class="flex min-h-screen w-full flex-col items-center justify-center gap-y-6 bg-bi-slate-300/40">
         @yield('content')
-        <footer class="w-full text-center text-sm font-medium text-gray-500">
+        <footer class="hidden w-full text-center text-sm font-medium text-gray-500 sm:block">
             &copy; 2024 SI-AKIP BRIDA
         </footer>
     </main>

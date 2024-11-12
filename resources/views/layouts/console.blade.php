@@ -21,7 +21,7 @@
 </head>
 
 <body class="text-gray-900 antialiased">
-    <div class="min-h-svh relative isolate flex w-full max-lg:flex-col">
+    <div class="min-h-svh relative isolate flex w-full max-w-7xl mx-auto max-lg:flex-col">
         <x-sidebar.wrapper />
         <main class="flex min-w-0 flex-1 flex-col py-2.5 pb-2.5 pl-64">
             <div class="grow px-10 py-6">
