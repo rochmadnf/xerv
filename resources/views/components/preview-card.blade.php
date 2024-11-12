@@ -10,5 +10,14 @@
         <h1 class="px-8 py-4 text-base font-semibold tracking-wider text-black/90 md:text-xl" id="objectName">Nama
             Lampiran</h1>
         <div class="h-full w-full px-8" id="objectAttachment"></div>
+        <object id="objectPreviewAttachment" class="px-8" data="#" type="application/pdf" frameborder="0"
+            width="100%" height="100%">
+            <a id="gdViewer" target="_blank" class="inline-flex rounded-md bg-emerald-500 px-4 py-2"
+                href="#">Lihat</a>
+            <a id="btnDownloadUnSupportView" class="inline-flex rounded-md bg-blue-500 px-4 py-2" href="#"><i
+                    class="icon-download"></i>
+                <span class="text-sm font-medium">Download File</span>
+            </a>
+        </object>
     </div>
 </div>
