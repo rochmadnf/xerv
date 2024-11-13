@@ -17,11 +17,12 @@
                 ini. Silakan pilih dan klik tombol dibawah ini.</p>
             <div class="flex flex-row items-center gap-4">
                 <a id="gdViewer" target="_blank"
-                    class="inline-flex items-center rounded-md bg-emerald-500 px-4 py-2 text-white"
+                    class="inline-flex items-center rounded-md bg-emerald-500 px-4 py-2 font-medium text-white"
                     href="#">Lihat</a>
                 <a id="btnDownloadUnSupportView" download=""
-                    class="inline-flex items-center rounded-md bg-blue-500 px-4 py-2 text-white" href="#">
-                    <span class="text-sm font-medium">Download File</span>
+                    class="inline-flex items-center rounded-md bg-blue-500 px-4 py-2 font-medium text-white"
+                    href="#">Download
+                    File
                 </a>
             </div>
         </object>
