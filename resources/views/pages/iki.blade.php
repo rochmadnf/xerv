@@ -80,9 +80,10 @@
                             <div class="flex flex-col gap-y-4 px-2 lg:px-6">
                                 @php
                                     $sortNumber = 1;
+                                    $fileByField = $files->where('field_id', $field->id);
                                 @endphp
-                                @foreach ($files as $file)
-                                    @if ((int) $file->field_id === (int) $field->id)
+                                @if ($fileByField->count() > 0)
+                                    @foreach ($fileByField as $file)
                                         <div
                                             class="relative flex flex-col items-start gap-x-0 gap-y-2 rounded-lg border border-slate-700/70 p-4 lg:flex-row lg:items-center lg:gap-x-2 lg:gap-y-0 lg:divide-x lg:divide-slate-700/70">
 
@@ -136,8 +137,14 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    @endif
-                                @endforeach
+                                    @endforeach
+                                @else
+                                    <div class="rounded-lg border border-blue-500 px-6 py-4 font-semibold text-blue-500">
+                                        Dokumen ASN pada
+                                        bidang ini
+                                        belum
+                                        tersedia.</div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
