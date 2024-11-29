@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Console;
 
 use App\Http\Controllers\Controller;
 use App\Models\Console\Field;
+use App\Models\Console\UserDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class UserController extends Controller
         $fieldSelected = request()->get('field') ?? 1;
         $users = User::notSuperAdmin()->whereHas('user_detail', function (Builder $query) use ($fieldSelected) {
             $query->where('field_id', $fieldSelected);
-        })->get();
+        })->orderByRaw('(SELECT order_number FROM user_details WHERE user_details.user_id = users.id)')->get();
 
         return view('pages.console.users.index', compact('users', 'fields', 'fieldSelected'));
     }
@@ -38,12 +39,13 @@ class UserController extends Controller
             'username' => ['required', 'string', 'min:5', Rule::unique('users', 'username')],
             'front_title' => ['nullable', 'string', 'min:2'],
             'back_title' => ['nullable', 'string', 'min:2'],
-            'field' => ['required', 'integer', 'min:2'],
+            'field' => ['required', 'integer', 'min:1'],
             'position' => ['required', 'string', 'min:2'],
         ], [], ['position' => 'Jabatan', 'field' => 'Bidang', 'back_title' => 'Gelar Belakang', 'front_title' => 'Gelar Depan', 'username' => 'NIP', 'name' => 'Nama ASN']);
 
         try {
             DB::beginTransaction();
+
             $user = User::create([
                 'name' => $validData['name'],
                 'username' => $validData['username'],
@@ -58,6 +60,7 @@ class UserController extends Controller
                 'back_title' => $validData['back_title'],
                 'field_id' => $validData['field'],
                 'position' => $validData['position'],
+                'order_number' => ((int) UserDetail::where('field_id', $validData['field'])->latest()->first()?->order_number) + 1,
             ]);
             DB::commit();
 
@@ -66,5 +69,21 @@ class UserController extends Controller
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function order(string $id, Request $request)
+    {
+        $userDetail = UserDetail::findOrFail($id);
+
+        if (!$request->has('order_number') || !is_numeric($request?->order_number)) {
+            return back();
+        }
+
+        $userDetailSelectedField = UserDetail::where(['field_id' => $userDetail->field_id, 'order_number' => $request?->order_number])->first();
+
+        $userDetailSelectedField->update(['order_number' => $userDetail->order_number]);
+        $userDetail->update(['order_number' => $request?->order_number]);
+
+        return back();
     }
 }

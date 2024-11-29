@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(Console\UserController::class)->prefix('users')->group(function () {
             Route::get('/', 'index')->name('console.users');
+            Route::post('/order/{id}/update', 'order')->name('console.users.order.update');
             Route::get('/create', 'create')->name('console.users.create');
             Route::post('/store', 'store')->name('console.users.store');
         });

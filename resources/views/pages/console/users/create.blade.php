@@ -17,7 +17,7 @@
 
     <form action="{{ route('console.users.store') }}" class="mt-8 space-y-4" method="POST" enctype="multipart/form-data">
         @csrf
-        <x-forms.input name="name" label="Nama ASN" placeholder="Agustin Maria" :value="old('title') ?? ''" />
+        <x-forms.input name="name" label="Nama ASN" placeholder="Agustin Maria" :value="old('name') ?? ''" />
         <div class="flex flex-row items-center gap-x-4">
             <x-forms.input name="front_title" label="Gelar Depan" :value="old('front_title') ?? ''" placeholder="" />
             <x-forms.input name="back_title" label="Gelar Belakang" :value="old('back_title') ?? ''" placeholder="" />

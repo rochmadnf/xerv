@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('back_title')->nullable();
             $table->foreignIdFor(Field::class);
             $table->string('position');
+            $table->unsignedTinyInteger('order_number')->nullable();
             $table->foreignIdFor(User::class);
             $table->timestamps();
         });

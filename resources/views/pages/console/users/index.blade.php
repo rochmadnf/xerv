@@ -29,19 +29,30 @@
         <table class="uk-table uk-table-striped">
             <thead>
                 <tr>
+                    <th class="w-fit text-center font-semibold">No.</th>
                     <th class="w-fit">NIP</th>
-                    <th class="w-2/5">Nama</th>
-                    <th>Jabatan &mdash; Bidang</th>
+                    <th class="w-fit">Nama</th>
+                    <th>Jabatan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($users as $user)
                     <tr>
-                        <td class="w-fit font-bold tracking-wide">{{ $user?->username }}</td>
-                        <td>{{ trim("{$user?->user_detail?->front_title} {$user?->name} {$user?->user_detail?->back_title}") }}
+                        <td class="text-center">
+                            <form action="{{ route('console.users.order.update', ['id' => $user?->user_detail?->id]) }}"
+                                method="POST">
+                                @csrf
+                                <input name="order_number"
+                                    class="w-5 rounded-lg border-none bg-transparent text-center outline-none"
+                                    type="tel" value="{{ $user?->user_detail?->order_number }}">
+                            </form>
                         </td>
-                        <td>{{ $user?->user_detail?->position }} &mdash; {{ $user?->user_detail?->field?->name }}</td>
+                        <td class="w-fit font-bold tracking-wide">{{ $user?->username }}</td>
+                        <td>
+                            {{ trim("{$user?->user_detail?->front_title} {$user?->name} {$user?->user_detail?->back_title}") }}
+                        </td>
+                        <td>{{ $user?->user_detail?->position }}</td>
                         <td>#</td>
                     </tr>
                 @endforeach

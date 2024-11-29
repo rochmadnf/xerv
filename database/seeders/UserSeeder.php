@@ -11,6 +11,10 @@ class UserSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+    protected $currentField = 0;
+    protected $sortNumber = 1;
+
     public function run(): void
     {
         $users = collect([[
@@ -200,7 +204,6 @@ class UserSeeder extends Seeder
                 'position' => 'Perencana Ahli Muda',
             ],
 
-
             [
                 'name' => 'Witarmin',
                 'username' => '19820826 201001 1 012',
@@ -209,7 +212,6 @@ class UserSeeder extends Seeder
                 'field_id' => 1,
                 'position' => 'Penyusun Program Anggaran dan Pelaporan',
             ],
-
 
             [
                 'name' => 'Syamsul Arief',
@@ -220,7 +222,6 @@ class UserSeeder extends Seeder
                 'position' => 'Pengadministrasi Perencanaan dan Program',
             ],
 
-
             [
                 'name' => 'Andri Kartono Paiman',
                 'username' => '19850421 202321 1 012',
@@ -229,7 +230,6 @@ class UserSeeder extends Seeder
                 'field_id' => 1,
                 'position' => 'Ahli Pertama - Pranata Komputer',
             ],
-
 
             [
                 'name' => 'Mohamad Taofan',
@@ -299,15 +299,6 @@ class UserSeeder extends Seeder
             ],
 
             [
-                'name' => 'Mariana',
-                'username' => '19850624 201604 2 001',
-                'front_title' => null,
-                'back_title' => null,
-                'field_id' => 2,
-                'position' => 'Pengadministrasi Evaluasi dan Kerjasama Penelitian',
-            ],
-
-            [
                 'name' => 'Hasim R',
                 'username' => '19760708 200112 1 004',
                 'front_title' => null,
@@ -315,7 +306,6 @@ class UserSeeder extends Seeder
                 'field_id' => 3,
                 'position' => 'Kepala Bidang Riset Inovasi dan Teknologi Daerah',
             ],
-
 
             [
                 'name' => 'Megawati',
@@ -325,7 +315,6 @@ class UserSeeder extends Seeder
                 'field_id' => 3,
                 'position' => 'Ahli Pertama Peneliti',
             ],
-
 
             [
                 'name' => 'Shinta Megawati Sitorus',
@@ -361,6 +350,15 @@ class UserSeeder extends Seeder
                 'back_title' => 'S.Pt., MMA',
                 'field_id' => 3,
                 'position' => 'Analis Pemanfaatan IPTEK dan Ahli Muda',
+            ],
+
+            [
+                'name' => 'Mariana',
+                'username' => '19850624 201604 2 001',
+                'front_title' => null,
+                'back_title' => null,
+                'field_id' => 3,
+                'position' => 'Pengadministrasi Evaluasi dan Kerjasama Penelitian',
             ],
 
             [
@@ -580,11 +578,17 @@ class UserSeeder extends Seeder
                 'remember_token' => str()->random(10),
             ]);
 
+            if ($this->currentField !== $employee['field_id']) {
+                $this->currentField = $employee['field_id'];
+                $this->sortNumber = 1;
+            }
+
             $emp->user_detail()->create([
                 'front_title' => $employee['front_title'],
                 'back_title' => $employee['back_title'],
                 'field_id' => $employee['field_id'],
                 'position' => $employee['position'],
+                'order_number' => $this->sortNumber++,
             ]);
         });
     }
