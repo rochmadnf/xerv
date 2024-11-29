@@ -16,6 +16,16 @@
     </div>
 
     <div class="mt-8 rounded-lg border border-slate-300 px-4 pb-8 pt-4">
+        <form class="mb-6 mt-4" id="selectField" action="{{ route('console.users') }}" method="GET">
+            <select id="field" name="field"
+                class="block w-full rounded-lg border border-slate-500/30 bg-white px-4 py-2 text-base focus:border-blue-500 focus:ring-blue-500">
+                @foreach ($fields as $field)
+                    <option value="{{ $field->id }}" {{ intval($field->id) === (int) $fieldSelected ? 'selected' : '' }}>
+                        {{ $field->name }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
         <table class="uk-table uk-table-striped">
             <thead>
                 <tr>
@@ -38,4 +48,14 @@
             </tbody>
         </table>
     </div>
+@endsection
+
+@section('script_page')
+    <script>
+        const selectField = document.querySelector('select[name="field"]');
+
+        selectField.addEventListener('change', (e) => {
+            e.target.parentElement.submit();
+        })
+    </script>
 @endsection

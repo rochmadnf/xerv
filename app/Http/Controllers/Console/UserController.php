@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Console;
 use App\Http\Controllers\Controller;
 use App\Models\Console\Field;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -13,9 +14,13 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::notSuperAdmin()->get();
+        $fields = Field::get();
+        $fieldSelected = request()->get('field') ?? 1;
+        $users = User::notSuperAdmin()->whereHas('user_detail', function (Builder $query) use ($fieldSelected) {
+            $query->where('field_id', $fieldSelected);
+        })->get();
 
-        return view('pages.console.users.index', compact('users'));
+        return view('pages.console.users.index', compact('users', 'fields', 'fieldSelected'));
     }
 
     public function create()
