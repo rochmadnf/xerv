@@ -11,8 +11,11 @@
         <h1 class="text-2xl/8 font-semibold text-zinc-950">Tambah Berkas IKI</h1>
     </div>
 
-    @if (session()->has('success'))
-        <input type="hidden" data-variants="success" id="flashMessage" value="{{ session()->get('success') }}">
+    @if (session()->has('alert'))
+        @php
+            $msg = explode(';', session()->get('alert'));
+        @endphp
+        <input type="hidden" data-variants="{{ $msg[0] }}" id="flashMessage" value="{{ $msg[1] }}">
     @endif
 
     <form action="{{ route('files.iki.store') }}" class="mt-8 space-y-4" method="POST" enctype="multipart/form-data">

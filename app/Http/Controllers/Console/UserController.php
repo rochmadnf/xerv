@@ -26,12 +26,14 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $request->request->set('field', intval(explode('--', $request->field)[0]));
+
         $validData = $request->validate([
             'name' => ['required', 'string', 'min:3'],
             'username' => ['required', 'string', 'min:5', Rule::unique('users', 'username')],
             'front_title' => ['nullable', 'string', 'min:2'],
             'back_title' => ['nullable', 'string', 'min:2'],
-            'field' => ['required', 'string', 'min:2'],
+            'field' => ['required', 'integer', 'min:2'],
             'position' => ['required', 'string', 'min:2'],
         ], [], ['position' => 'Jabatan', 'field' => 'Bidang', 'back_title' => 'Gelar Belakang', 'front_title' => 'Gelar Depan', 'username' => 'NIP', 'name' => 'Nama ASN']);
 
@@ -49,7 +51,7 @@ class UserController extends Controller
             $user->user_detail()->create([
                 'front_title' => $validData['front_title'],
                 'back_title' => $validData['back_title'],
-                'field' => $validData['field'],
+                'field_id' => $validData['field'],
                 'position' => $validData['position'],
             ]);
             DB::commit();

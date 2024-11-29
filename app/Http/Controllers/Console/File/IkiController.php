@@ -31,16 +31,24 @@ class IkiController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->has('asn')) {
+            $request->request->set('asn', intval(explode('--', $request->asn)[0]));
+        }
+
         $rules = [
             'doc' => ['required', 'file', 'mimetypes:application/pdf', 'max:76800'],
             'doc_year' => ['required', 'date_format:Y'],
             'asn' => ['required', Rule::exists('users', 'id')],
         ];
 
-        if ((int) env('SUPER_ADMIN_ID') === (int) auth()->user()->id) {
-            $request->request->set('asn', intval(explode('--', $request->asn)[0]));
-        } else {
+        if ((int) env('SUPER_ADMIN_ID') !== (int) auth()->user()->id) {
             $rules['asn'][0] = 'nullable';
+        }
+
+        $ikiFile = Iki::with('user')->where(['user_id' => $request->asn ?? auth()->user()?->id, 'document_year' => $request->doc_year])->first();
+
+        if (!is_null($ikiFile)) {
+            return back()->with('alert', "error;Dokumen IKI {$ikiFile->user->name} untuk tahun {$ikiFile->documentYear} telah tersedia.");
         }
 
         $validData = $request->validate(
@@ -64,7 +72,7 @@ class IkiController extends Controller
             'user_id' => ((int) env('SUPER_ADMIN_ID') === (int) auth()->user()->id) ? $validData['asn'] : auth()?->user()?->id,
         ]);
 
-        return back()->with('success', 'Berkas berhasil ditambahkan.');
+        return back()->with('alert', 'success;Berkas berhasil ditambahkan.');
     }
 
     public function edit(string $id)

@@ -103,7 +103,7 @@
                                             </div>
 
                                             <div class="flex flex-row gap-x-2 pl-0 lg:pl-2">
-                                                <button data-id="{{ $file->iki_uuid }}" data-fn="preview"
+                                                <button title="Pratinjau" data-id="{{ $file->iki_uuid }}" data-fn="preview"
                                                     data-file-type="iki"
                                                     class="inline-flex items-center rounded-full bg-teal-500 p-2 text-white transition duration-300 hover:bg-teal-600">
                                                     <svg viewBox="0 0 24 24" class="size-5 pointer-events-none"
@@ -118,7 +118,7 @@
                                                         <path d="M7 17H11" stroke-linecap="round" stroke-linejoin="round" />
                                                     </svg>
                                                 </button>
-                                                <button data-id="{{ $file->iki_uuid }}" data-fn="download"
+                                                <button title="Unduh" data-id="{{ $file->iki_uuid }}" data-fn="download"
                                                     data-file-type="iki"
                                                     class="inline-flex items-center rounded-full bg-slate-500 p-2 text-white transition duration-300 hover:bg-slate-600">
                                                     <svg viewBox="0 0 24 24" class="size-5 pointer-events-none"
