@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
             });
 
 
-            Route::controller(Console\File\AkipController::class)->prefix('akip')->group(function () {
+            Route::controller(Console\File\AkipController::class)->middleware('onlyAdmin')->prefix('akip')->group(function () {
                 Route::post('/store', 'store')->name('files.akip.store');
                 Route::get('/{id}/edit', 'edit')->name('files.akip.edit');
                 Route::get('/{id}/edit-file', 'editFile')->name('files.akip.edit.file');
@@ -46,11 +46,13 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-        Route::controller(Console\UserController::class)->prefix('users')->group(function () {
+        Route::controller(Console\UserController::class)->prefix('users')->middleware('onlyAdmin')->group(function () {
             Route::get('/', 'index')->name('console.users');
             Route::post('/order/{id}/update', 'order')->name('console.users.order.update');
             Route::get('/create', 'create')->name('console.users.create');
             Route::post('/store', 'store')->name('console.users.store');
+            Route::get('/edit', 'edit')->name('console.users.edit');
+            Route::delete('/{id}/delete', 'destroy')->name('console.users.destroy');
         });
     });
 });

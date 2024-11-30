@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Console;
 
 use App\Http\Controllers\Controller;
 use App\Models\Console\Field;
+use App\Models\Console\File\Iki;
 use App\Models\Console\UserDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -86,6 +88,34 @@ class UserController extends Controller
         }
 
         $userDetail->update(['order_number' => $request?->order_number]);
+
+        return back();
+    }
+
+    public function edit(Request $request) {}
+
+    public function destroy(int $id)
+    {
+        $user = User::where('username', $id)->firstOrFail();
+
+        if ($user) {
+            $iki = Iki::where('user_id', $user->id)->first();
+            if (str()->of($iki->document_path)->contains('sample.pdf') === false) {
+                Storage::disk('asset_public')->delete($iki->document_path);
+            }
+            $iki->delete();
+            $userField = UserDetail::where('user_id', $user->id)?->first();
+            $otherUserDetailsOnSameField = UserDetail::where('field_id', $userField->field_id)->get();
+            $userField->delete();
+
+            $sortNumber = 0;
+            foreach ($otherUserDetailsOnSameField as $other) {
+                $other->update(['order_number' => $sortNumber]);
+                $sortNumber += 1;
+            }
+
+            $user->delete();
+        }
 
         return back();
     }
