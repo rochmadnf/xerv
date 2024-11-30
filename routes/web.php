@@ -51,8 +51,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/order/{id}/update', 'order')->name('console.users.order.update');
             Route::get('/create', 'create')->name('console.users.create');
             Route::post('/store', 'store')->name('console.users.store');
-            Route::get('/edit', 'edit')->name('console.users.edit');
             Route::delete('/{id}/delete', 'destroy')->name('console.users.destroy');
         });
+
+        Route::get('/user/{id}/edit', [Console\UserController::class, 'edit'])->name('console.users.edit');
+        Route::post('/user/{id}/update', [Console\UserController::class, 'update'])->name('console.users.update');
+        Route::post('/user/{id}/change-password', [Console\UserController::class, 'changePassword'])->name('console.users.change.password');
     });
 });

@@ -59,7 +59,8 @@
 
                     <div
                         class="absolute -top-8 right-0 hidden h-8 w-full flex-row items-center justify-end gap-y-2 rounded-md bg-transparent py-2 pr-3 transition-all duration-500 group-hover:flex">
-                        <a href="#" type="button" title="Ubah Data"
+                        <a href="{{ route('console.users.edit', ['id' => $user?->username]) }}" type="button"
+                            title="Ubah Data"
                             class="size-6 inline-flex items-center justify-center rounded-md text-amber-500 transition-colors duration-150 hover:text-amber-800">
                             <svg viewBox="0 0 24 24" fill="currentColor" class="size-5 pointer-events-none"
                                 xmlns="http://www.w3.org/2000/svg">

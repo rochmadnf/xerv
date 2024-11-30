@@ -1,20 +1,20 @@
-<div class="fixed inset-y-0 left-0 w-64 max-lg:hidden bg-white">
+<div class="fixed inset-y-0 left-0 w-64 bg-white max-lg:hidden">
     <nav class="flex h-full min-h-0 flex-col">
 
         {{-- header --}}
-        <div class="flex items-center justify-center gap-x-2 border-b border-r border-slate-950/10 py-4 px-2">
+        <div class="flex items-center justify-center gap-x-2 border-b border-r border-slate-950/10 px-2 py-4">
             <span class="select-none truncate text-lg font-semibold leading-tight tracking-wide">SI-AKIP
                 BRIDA</span>
         </div>
 
         {{-- menu --}}
         <div role="menu"
-            class="flex flex-1 flex-col overflow-y-auto py-3.5 px-2 gap-1.5 border-r border-r-slate-950/10">
+            class="flex flex-1 flex-col gap-1.5 overflow-y-auto border-r border-r-slate-950/10 px-2 py-3.5">
             <x-sidebar.menu />
         </div>
 
         {{-- user auth --}}
-        <div class="relative flex min-w-0 flex-col border-t border-r border-slate-950/10 p-2">
+        <div class="relative flex min-w-0 flex-col border-r border-t border-slate-950/10 p-2">
             <button class="flex flex-row items-center gap-3 rounded-lg p-2 focus-within:bg-slate-100 hover:bg-slate-100"
                 type="button">
                 <span class="size-12 inline-grid shrink-0 rounded-lg p-1.5 align-middle">
@@ -31,8 +31,17 @@
                     <path d="m6.293 13.293 1.414 1.414L12 10.414l4.293 4.293 1.414-1.414L12 7.586z"></path>
                 </svg>
             </button>
-            <div class="w-full uk-drop uk-dropdown" uk-dropdown="mode: click">
+            <div class="uk-drop uk-dropdown w-full" uk-dropdown="mode: click">
                 <ul class="uk-dropdown-nav uk-nav">
+                    <li>
+                        <a href="{{ route('console.users.edit', ['id' => auth()->user()->username]) }}">Data
+                            Diri</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('console.users.edit', ['id' => auth()->user()->username]) }}?action=change-password">Ubah
+                            Password</a>
+                    </li>
                     <li class="uk-nav-divider"></li>
                     <li>
                         <form class="p-1" action="{{ route('logout') }}" method="POST">

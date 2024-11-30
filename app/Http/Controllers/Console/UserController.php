@@ -9,6 +9,7 @@ use App\Models\Console\UserDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -92,7 +93,119 @@ class UserController extends Controller
         return back();
     }
 
-    public function edit(Request $request) {}
+    public function edit(string|int $id)
+    {
+        $user = User::where('username', $id)->firstOrFail();
+
+        if ((string) $user->username !== (string) auth()->user()->username) {
+            return back();
+        }
+
+        $fields = Field::get();
+        $profileSection = true;
+        $passSection = false;
+
+        if (request()->has('action') && request()->action === 'change-password') {
+            $passSection = true;
+            $profileSection = false;
+        }
+
+        if ((int) auth()->user()->id === (int) env('SUPER_ADMIN_ID') && (int) auth()->user()->id !== $user->id) {
+            $passSection = true;
+        }
+
+        return view('pages.console.users.edit', [
+            'user' => $user,
+            'fields' => $fields,
+            'passSection' => $passSection,
+            'profileSection' => $profileSection
+        ]);
+    }
+
+    public function update(string|int $id, Request $request)
+    {
+        $user = User::where('username', $id)->firstOrFail();
+        $currentNIP = $user->username;
+
+        if ((int) auth()->user()->id === (int) env('SUPER_ADMIN_ID') && (int) env('SUPER_ADMIN_ID') === (int) $user->id) {
+            $validData = $request->validate([
+                'name' => ['required', 'string', 'min:3'],
+                'username' => ['required', 'string', 'min:5', Rule::unique('users', 'username')->ignore($id, 'username')],
+            ]);
+
+            $user->update([
+                'name' => $validData['name'],
+                'username' => $validData['username']
+            ]);
+        } else {
+            if ((int) auth()->user()->id !== intval(env('SUPER_ADMIN_ID')) && (int) auth()->user()->id !== $user->id) {
+                return redirect()->route('console.dashboard');
+            }
+            $rules = [
+                'name' => ['required', 'string', 'min:3'],
+                'username' => ['required', 'string', 'min:5', Rule::unique('users', 'username')->ignore($id, 'username')],
+                'front_title' => ['nullable', 'string', 'min:2'],
+                'back_title' => ['nullable', 'string', 'min:2'],
+            ];
+            if ($request->has('field')) {
+                $request->request->set('field', intval(explode('--', $request->field)[0]));
+                $rules['field'] = ['required', 'integer', 'min:1'];
+                $rules['position'] = ['required', 'string', 'min:2'];
+            }
+
+            $validData = $request->validate($rules, [], ['position' => 'Jabatan', 'field' => 'Bidang', 'back_title' => 'Gelar Belakang', 'front_title' => 'Gelar Depan', 'username' => 'NIP', 'name' => 'Nama ASN']);
+
+            if ($request->has('field')) {
+                if ((int) $user->user_detail->field_id !== (int) $validData['field']) {
+                    $lastOrderNumber = intval(UserDetail::where('field_id', $validData['field'])->latest()->first()?->order_number) + 1;
+                    $sort = 1;
+                    foreach (UserDetail::whereNot('user_id', $user->id)->where('field_id', (int) $user->user_detail->field_id)->get() as $order) {
+                        $order->update(['order_number' => $sort]);
+                        $sort += 1;
+                    }
+                }
+            }
+
+            $user->update([
+                'name' => $validData['name'],
+                'username' => $validData['username']
+            ]);
+
+            $user->user_detail()->update([
+                'front_title' => $validData['front_title'],
+                'back_title' => $validData['back_title'],
+                'field_id' => $validData['field'] ?? $user->user_detail->field_id,
+                'position' => $validData['position'] ?? $user->user_detail->position,
+                'order_number' => $lastOrderNumber ?? $user->user_detail->order_number,
+            ]);
+        }
+
+        if ($currentNIP !== $user->username) {
+            return redirect()->route('console.users.edit', ['id' => $user->username])->with('success', 'Data berhasil diubah.');
+        }
+
+        return back()->with('success', 'Data berhasil diubah.');
+    }
+
+    public function changePassword(int|string $id, Request $request)
+    {
+        $user = User::where('username', $id)->firstOrFail();
+
+        $rules = [
+            'current_password' => ['required', 'string', 'min:8', 'current_password'],
+            'password' => ['different:current_password', 'required', 'string', 'confirmed', 'min:8']
+        ];
+
+        if ((int) auth()->user()->id === (int) env('SUPER_ADMIN_ID') && (int) env('SUPER_ADMIN_ID') !== $user->id) {
+            unset($rules['current_password']);
+        }
+
+        $validData = $request->validate($rules, [], ['current_password' => 'Katasandi Lama', 'password' => 'Katasandi']);
+
+        $user->update(['password' => bcrypt($validData['password'])]);
+
+        return back()->with('success', 'Katasandi berhasil diubah.');
+    }
 
     public function destroy(int $id)
     {

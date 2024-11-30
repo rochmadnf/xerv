@@ -21,7 +21,7 @@ return [
     //     'string'  => '',
     // ],
     'boolean' => ':Attribute harus memiliki nilai benar atau salah.',
-    // 'confirmed'         => '',
+    'confirmed'         => 'Katasandi Baru dan Konfirmasi Katasandi Baru tidak cocok',
     'current_password' => 'Katasandi tidak sesuai.',
     'date' => ':Attribute harus berupa tanggal yang valid.',
     // 'date_equals'       => '',
