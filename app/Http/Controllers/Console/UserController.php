@@ -97,7 +97,7 @@ class UserController extends Controller
     {
         $user = User::where('username', $id)->firstOrFail();
 
-        if ((string) $user->username !== (string) auth()->user()->username) {
+        if ((string) $user->username !== (string) auth()->user()->username && (int) auth()->user()->id !== (int) env('SUPER_ADMIN_ID')) {
             return back();
         }
 
