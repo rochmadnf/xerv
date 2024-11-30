@@ -81,7 +81,10 @@ class UserController extends Controller
 
         $userDetailSelectedField = UserDetail::where(['field_id' => $userDetail->field_id, 'order_number' => $request?->order_number])->first();
 
-        $userDetailSelectedField->update(['order_number' => $userDetail->order_number]);
+        if (!is_null($userDetailSelectedField)) {
+            $userDetailSelectedField->update(['order_number' => $userDetail?->order_number]);
+        }
+
         $userDetail->update(['order_number' => $request?->order_number]);
 
         return back();
